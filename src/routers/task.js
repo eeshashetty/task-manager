@@ -3,7 +3,7 @@ const router = new express.Router()
 const Task = require('../models/task')
 const auth = require('../middleware/auth')
 
-router.post('/tasks', auth, async (req,res) => {
+router.post('/api/tasks', auth, async (req,res) => {
     const task = new Task({
         ...req.body,
         owner: req.user
@@ -16,7 +16,7 @@ router.post('/tasks', auth, async (req,res) => {
     }
 })
 
-router.get('/tasks', auth, async (req,res) => {
+router.get('/api/tasks', auth, async (req,res) => {
     const match = {}
     const sort = {}
 
@@ -45,7 +45,7 @@ router.get('/tasks', auth, async (req,res) => {
     }
 })
 
-router.get('/tasks/:id', auth, async (req,res) => {
+router.get('/api/tasks/:id', auth, async (req,res) => {
     const _id = req.params.id
     try {
         const task = await Task.findOne({_id, owner: req.user._id})
@@ -55,7 +55,7 @@ router.get('/tasks/:id', auth, async (req,res) => {
     }
 })
 
-router.patch('/tasks/:id', auth, async (req,res) => {
+router.patch('/api/tasks/:id', auth, async (req,res) => {
     const _id = req.params.id
     const updates = Object.keys(req.body)
     const allowedUpdates = ['description','completed']
@@ -76,7 +76,7 @@ router.patch('/tasks/:id', auth, async (req,res) => {
     }
 })
 
-router.delete('/tasks/:id', auth, async (req,res) => {
+router.delete('/api/tasks/:id', auth, async (req,res) => {
     try{
         const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
         if(!task){
