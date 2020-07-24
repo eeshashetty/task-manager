@@ -4,17 +4,16 @@ const Task = require('../models/task')
 const auth = require('../middleware/auth')
 
 router.post('/api/tasks', auth, async (req,res) => {
-    res.send(req.body)
-    // const task = new Task({
-    //     ...req.body,
-    //     owner: req.user
-    // })
-    // try {
-    //     const result = await task.save()
-    //     res.status(201).send(result)
-    // } catch (e) {
-    //     res.status(400).send(e)
-    // }
+    const task = new Task({
+        ...req.body,
+        owner: req.user
+    })
+    try {
+        const result = await task.save()
+        res.status(201).send(result)
+    } catch (e) {
+        res.status(400).send(e)
+    }
 })
 
 router.get('/api/tasks', auth, async (req,res) => {
