@@ -9,16 +9,15 @@ const sharp = require('sharp')
 const { sendWelcomeEmail, sendCancellationEmail } = require('../emails/account')
 
 router.post('/api/users', async (req,res) => {
-    res.send(req.body)
-    // const user = new User(req.body)
-    // try {
-    //     await user.save()
-    //     sendWelcomeEmail(user.email, user.name)
-    //     const token = await user.generateAuthToken()
-    //     res.status(201).send({ user, token })
-    // } catch (e) {
-    //     res.status(500).send(e)
-    // }
+    const user = new User(req.body)
+    try {
+        await user.save()
+        sendWelcomeEmail(user.email, user.name)
+        const token = await user.generateAuthToken()
+        res.status(201).send({ user, token })
+    } catch (e) {
+        res.status(500).send(e)
+    }
 })
 
 router.post('/api/users/login', async (req,res) => {
